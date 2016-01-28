@@ -1,0 +1,3 @@
+# Animation module
+
+Early draft

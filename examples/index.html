@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placemark animation</title>
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .map {
+            width: 100%;
+            height: 100%;
+        }
+        .fa {
+            font-size: 1.5rem;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map"></div>
+
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&mode=debug&ns=ym"></script>
+
+    <script src="../build/placemark-animation.min.js"></script>
+    <script>
+        ym.ready(['Map', 'Placemark'])
+            .then(function (ym) {
+                var map = new ym.Map('map', {
+                        center: [55.74524234796502, 37.586730756347656],
+                        zoom: 5,
+                        controls: []
+                    });
+                ym.modules.require([
+                    'PlacemarkVivid'
+                    ])
+                    .spread(function() {
+                        map.geoObjects.add(new PlacemarkVivid(map.getCenter()));
+                    });
+            }).fail(onError);
+
+        function onError (err) {
+            console.error(err);
+        }
+    </script>
+</body>
+</html>

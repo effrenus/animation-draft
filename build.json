@@ -1,0 +1,6 @@
+{
+    "concatTo": "animation-module.js",
+    "minify": false,
+    "namespace": "ym",
+    "babel": true
+}
