@@ -18,16 +18,20 @@ ym.modules.define(
             this._startTime = globalClock.getTime();
             this._timeValue = constants.TIME_UNRESOLVED;
 
-            globalClock.events.add('clockupdate', this._onGlobalClockUpdate, this);
+            globalClock.events.add('timeupdate', this._onGlobalClockUpdate, this);
         }
 
-        extend(Timeline.prototype, {
+        extend(Timeline, {
             getTime: function () {
                 if (this._timeValue == constants.TIME_UNRESOLVED) {
                     throw new Error('Time value not resolved yet');
                 }
 
                 return this._timeValue;
+            },
+
+            isActive: function () {
+                return this._timeValue != constants.TIME_UNRESOLVED;
             },
 
             _onGlobalClockUpdate: function (globalTimeValue) {

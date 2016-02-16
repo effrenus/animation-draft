@@ -5,10 +5,11 @@
 ym.modules.define(
     'animation.KeyframeEffect',
     [
-        'option.Manager',
-        'util.extend'
+        'util.extend',
+        'util.animation.frames',
+        'animation.constants'
     ],
-    function (provide, OptionManager, extend) {
+    function (provide, extend, utilFrames, constants) {
 
         /**
          * @constructor
@@ -16,16 +17,16 @@ ym.modules.define(
          * @param {Object|Object[]} frames
          * @param {Object|Number} options Set duration if number, otherwise {iterationComposite, composite, spacing}
          */
-        function KeyframeEffect (target: Object | void, frames: Object|Array<Object>, options: number | Object) {
+        function KeyframeEffect (target, frames, options) {
             this._target = target || null;
             this._originFrames = frames;
+            this._localTime = constants.TIME_UNRESOLVED;
 
-            options = typeof options == 'number' ? {duration: options} : options;
-            this._effectTimeProperties = new AnimationEffectTimingProperties(options);
-            this._frame = processFrames(frames);
+            this._timing = new AnimationEffectTiming(options);
+            this._keyframes = utilFrames.process(frames);
         }
 
-        extend(KeyframeEffect.prototype, {
+        extend(KeyframeEffect, {
             setFrames: function (frames: Object|Array<Object>) {
                 this._frames = frames;
             }

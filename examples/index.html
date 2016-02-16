@@ -23,28 +23,12 @@
 <body>
     <div id="map" class="map"></div>
 
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&mode=debug&ns=ym"></script>
-
-    <script src="../build/placemark-animation.min.js"></script>
+    <script src="/build/animation-module.js"></script>
     <script>
-        ym.ready(['Map', 'Placemark'])
-            .then(function (ym) {
-                var map = new ym.Map('map', {
-                        center: [55.74524234796502, 37.586730756347656],
-                        zoom: 5,
-                        controls: []
-                    });
-                ym.modules.require([
-                    'PlacemarkVivid'
-                    ])
-                    .spread(function() {
-                        map.geoObjects.add(new PlacemarkVivid(map.getCenter()));
-                    });
-            }).fail(onError);
-
-        function onError (err) {
-            console.error(err);
-        }
+        ym.require(['animation.globalClock'])
+            .spread(function (globalClock) {
+                console.log(globalClock);
+            });
     </script>
 </body>
 </html>

@@ -1,3 +1,6 @@
+/**
+ * @fileOverview
+ */
 ym.modules.define(
     'animation.globalAnimationList',
     [
@@ -14,7 +17,10 @@ ym.modules.define(
 
         extend(AnimationList.prototype, {
             add: function (animation) {
-                this._animations[this._getPrefixedId()] = animation;
+                var animationId = this._getPrefixedId();
+                this._animations[animationId] = animation;
+
+                return animationId;
             },
 
             remove: function (id) {
@@ -22,7 +28,7 @@ ym.modules.define(
             },
 
             _getPrefixedId: function (): number {
-                return 'ani_' + (++this._count);
+                return PREFIX + (++this._count);
             }
         });
 

@@ -6,47 +6,44 @@
 ym.modules.define(
     'animation.globalClock',
     [
-        'util.defineClass',
+        'util.extend',
         'EventManager',
-        'system.nextTick'
+        'system.nextTick',
+        'animation.constants'
     ],
-    function (provide, defineClass, EventManager, nextTick) {
+    function (provide, extend, EventManager, nextTick, constants) {
         /**
          * Global clock start time is time when module intialized
          */
         function GlobalClock () {
             this._startTime = Math.floor(perfomance.now());
-            this._currentTime = null;
-            this._timeValue = null;
-            this._nextTick = this._nextTick.bind(this);
+            this._currentTime = constants.TIME_UNRESOLVED;
+            this._timeValue = constants.TIME_UNRESOLVED;
 
             this.events = new EventManager();
-
-            nextTick(this._nextTick);
         }
 
-        defineClass(GlobalClock, {
+        extend(GlobalClock, {
             /**
              * Return time value
              * @return {Number}
              */
             getTime: function () {
-                if (this._timeValue == null) {
-                    throw new Error('Time value is not resolved, yet.');
-                }
+                // if (this._timeValue == constants.TIME_UNRESOLVED) {
+                //     throw new Error('Time value is not resolved, yet.');
+                // }
                 return this._timeValue;
             },
 
             /**
-             * On every tick update time value
+             * On every tick updates clock's time value
+             * See also `animation.timeSampling`
              */
-            _nextTick: function () {
+            update: function () {
                 this._currentTime = Math.floor(perfomance.now());
                 this._timeValue = this._currentTime - this._startTime;
 
-                this.events.fire('clockupdate', this._timeValue);
-
-                nextTick(this._nextTick);
+                this.events.fire('timeupdate', this._timeValue);
             }
         });
 
